@@ -1,11 +1,17 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState, useContext } from 'react'
 
 import { Box, Button, TextField } from '@mui/material'
 import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined'
 import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined'
+import { EntriesContext } from '../../context/entries'
+import { UIContext } from '../../context/ui/UIContext'
 
 const NewEntry = () => {
-  const [isAdding, setIsAdding] = useState(false)
+  //context
+  const { addNewEntry } = useContext(EntriesContext)
+  const { isAdding, setIsAddingEntry } = useContext(UIContext)
+
+  //states
   const [inputValue, setInputValue] = useState('')
   const [touched, setTouched] = useState(false)
 
@@ -14,7 +20,11 @@ const NewEntry = () => {
   }
   const onSave = () => {
     if (inputValue.length === 0) return
-    console.log(inputValue)
+
+    addNewEntry(inputValue)
+    setIsAddingEntry(false)
+    setInputValue('')
+    setTouched(false)
   }
   return (
     <Box sx={{ padding: 2, marginBottom: 2 }}>
@@ -34,7 +44,7 @@ const NewEntry = () => {
             onBlur={() => setTouched(true)}
           />
           <Box display='flex' justifyContent='space-between'>
-            <Button onClick={() => setIsAdding(false)}>Cancelar</Button>{' '}
+            <Button onClick={() => setIsAddingEntry(false)}>Cancelar</Button>{' '}
             <Button
               variant='outlined'
               endIcon={<SaveAsOutlinedIcon />}
@@ -50,7 +60,7 @@ const NewEntry = () => {
           variant='outlined'
           fullWidth
           startIcon={<AddCommentOutlinedIcon />}
-          onClick={() => setIsAdding(true)}
+          onClick={() => setIsAddingEntry(true)}
         >
           Nueva entrada
         </Button>
