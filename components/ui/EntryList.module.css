@@ -1,0 +1,5 @@
+.isDragging {
+  opacity: 0.5;
+  border-radius: 10px;
+  border: 1px dashed white;
+}

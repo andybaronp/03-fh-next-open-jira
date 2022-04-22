@@ -5,11 +5,14 @@ import { createContext } from 'react'
 interface ContextProp {
   sidemenuOpen: boolean
   isAdding: boolean
+  isDragging: boolean
 
   // Methods
   openSideMenu: () => void
   closeSideMenu: () => void
   setIsAddingEntry: (stateAdding: boolean) => void
+  StarDragging: () => void
+  EndDragging: () => void
 }
 
 export const UIContext = createContext({} as ContextProp)

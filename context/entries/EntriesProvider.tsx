@@ -44,6 +44,10 @@ export const EntriesProvider: FC = ({ children }) => {
     }
     dispatch({ type: '[Entry] AddEntry', payload: newEntry })
   }
+
+  const upEntry = (entry: Entry) => {
+     dispatch({type:'[Emtry] UpEntry', payload: entry})
+   }
   //reducer
 
   return (
@@ -54,6 +58,7 @@ export const EntriesProvider: FC = ({ children }) => {
 
         // Methods
         addNewEntry,
+        upEntry,
       }}
     >
       {children}
