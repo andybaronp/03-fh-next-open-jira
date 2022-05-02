@@ -23,6 +23,7 @@ export const EntryList: FC<Props> = ({ status }) => {
 
   //Funtions Drag on Drop
   const onDropEntry = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
     const id = event.dataTransfer.getData('text')
 
     const entry = entries.find((entry) => entry._id === id)!
