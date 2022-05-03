@@ -1,7 +1,7 @@
 import mongoose, { Model, Schema } from 'mongoose'
-import { Entry } from '../../../interfaces/entry'
+import { Entry } from '../interfaces/entry'
 
-interface IEntry extends Entry {}
+export interface IEntry extends Entry {}
 
 const entrySchema = new Schema({
   description: { type: String, required: true },
@@ -9,7 +9,7 @@ const entrySchema = new Schema({
   status: {
     type: String,
     enum: {
-      values: ['pending', 'in-progess', 'finished'],
+      values: ['pending', 'in-progress', 'finished'],
       message: '{VALUE} no es un estado permitido',
     },
   },
@@ -17,7 +17,5 @@ const entrySchema = new Schema({
 
 const EntryModel: Model<IEntry> =
   mongoose.models.Entry || mongoose.model('Entry', entrySchema)
-
-const entry = new EntryModel()
 
 export default EntryModel

@@ -5,4 +5,4 @@ export interface Entry {
   status: EntryStatus
 }
 
-export type EntryStatus = 'pending' | 'in-progress' | 'finish'
+export type EntryStatus = 'pending' | 'in-progress' | 'finished'

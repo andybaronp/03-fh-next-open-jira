@@ -5,7 +5,6 @@ import { EntryStatus } from '../../interfaces'
 import { EntriesContext } from '../../context/entries/EntriesContext'
 import { UIContext } from '../../context/ui'
 import style from './EntryList.module.css'
-import { Entry } from '../../interfaces/entry'
 
 interface Props {
   status: EntryStatus
