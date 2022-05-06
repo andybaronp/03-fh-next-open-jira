@@ -21,6 +21,7 @@ export const EntriesProvider: FC = ({ children }) => {
     const { data } = await entriesApi.post<Entry>('/entries', { description })
 
     dispatch({ type: '[Entry] AddEntry', payload: data })
+    refreshEntries()
   }
 
   const upEntry = (entry: Entry) => {
