@@ -44,7 +44,7 @@ export const EntryList: FC<Props> = ({ status }) => {
       <Paper
         sx={{
           height: 'calc(100vh - 100px)',
-          //  overflow: 'scroll',
+          overflow: 'scroll',
           backgroundColor: 'transparent',
           padding: '1px 5px',
         }}
