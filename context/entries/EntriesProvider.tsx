@@ -17,19 +17,37 @@ const Entries_INITIAL_STATE: EntriesState = {
 export const EntriesProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE)
 
+  // New Entry
   const addNewEntry = async (description: string) => {
-    const { data } = await entriesApi.post<Entry>('/entries', { description })
-
-    dispatch({ type: '[Entry] AddEntry', payload: data })
-    refreshEntries()
+    try {
+      const { data } = await entriesApi.post<Entry>('/entries', { description })
+      dispatch({ type: '[Entry] AddEntry', payload: data })
+      refreshEntries()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const upEntry = (entry: Entry) => {
-    dispatch({ type: '[Emtry] UpEntry', payload: entry })
+  // Update State Entry
+  const upEntry = async ({ _id, status, description }: Entry) => {
+    try {
+      const { data } = await entriesApi.put<Entry>(`/entries/${_id}`, {
+        description,
+        status,
+      })
+      dispatch({ type: '[Emtry] UpEntry', payload: data })
+    } catch (error) {
+      console.log(error)
+    }
   }
+  // Get Entries
   const refreshEntries = async () => {
-    const { data } = await entriesApi.get<Entry[]>('/entries')
-    dispatch({ type: 'Refresh - Data', payload: data })
+    try {
+      const { data } = await entriesApi.get<Entry[]>('/entries')
+      dispatch({ type: 'Refresh - Data', payload: data })
+    } catch (error) {
+      console.log(error)
+    }
   }
   useEffect(() => {
     refreshEntries()
