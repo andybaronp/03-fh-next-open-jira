@@ -18,10 +18,19 @@ mongodb://localhost:27017/entriesdb
 
 Renombrar el archivo **.env.template** a **.env**
 
+## Recontruir el proyecto y levantar Next.js
+
+```
+yarn install
+yarn dev
+```
+
 ## Llenar la BD con datos de prueba
 
 llamar:
 
 ```
+
 localhost:3000/api/seed
+
 ```
