@@ -1,4 +1,7 @@
-import { ChangeEvent, useState, useMemo } from 'react'
+import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
+
+import { ChangeEvent, useState, useMemo, FC, useContext } from 'react'
 import {
   Card,
   Grid,
@@ -18,13 +21,22 @@ import {
 import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined'
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import { Layout } from '../../components/layouts'
-import { EntryStatus } from '../../interfaces'
+import { Entry, EntryStatus } from '../../interfaces'
+
+import { dbEntries } from '../../database'
+import { EntriesContext } from '../../context/entries'
+import { dateFormat } from '../../utils'
 
 const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished']
 
-const EntryPage = () => {
-  const [inputValue, setInputValue] = useState('')
-  const [status, setStatus] = useState<EntryStatus>('pending')
+interface Props {
+  entry: Entry
+}
+const EntryPage: FC<Props> = ({ entry }) => {
+  const router = useRouter()
+  const { upEntry } = useContext(EntriesContext)
+  const [inputValue, setInputValue] = useState(entry.description)
+  const [status, setStatus] = useState<EntryStatus>(entry.status)
   const [touched, setTouched] = useState(false)
 
   const isNotValid = useMemo(
@@ -40,16 +52,25 @@ const EntryPage = () => {
   }
 
   const onSave = () => {
-    console.log({ inputValue, status })
+    if (inputValue.trim().length === 0) return
+    const updatedEntry = {
+      ...entry,
+      status,
+      description: inputValue,
+    }
+    upEntry(updatedEntry, true)
+    router.push('/')
   }
   return (
-    <Layout title='.......'>
+    <Layout title={inputValue.substring(0, 15) + '...'}>
       <Grid container justifyContent='center' sx={{ marginTop: 2 }}>
         <Grid item xs={12} sm={8} md={6}>
           <Card>
             <CardHeader
-              title={`Entrada ${inputValue}`}
-              subheader={`Creada hace:.... minutos`}
+              title='Entrada:'
+              subheader={`Creada ${dateFormat.getFormatDistanceToNow(
+                entry.createdAt
+              )}`}
             ></CardHeader>
             <CardContent>
               <TextField
@@ -105,6 +126,27 @@ const EntryPage = () => {
       </IconButton>
     </Layout>
   )
+}
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { id } = params as { id: string }
+  const entry = await dbEntries.getEntryByID(id)
+  if (!entry) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: {
+      entry,
+    },
+  }
 }
 
 export default EntryPage

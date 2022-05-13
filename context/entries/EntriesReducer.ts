@@ -21,8 +21,8 @@ export const entriesReducer = (
         ...state,
         entries: state.entries.map((entry) => {
           if (entry._id === action.payload._id) {
-            entry.description = action.payload.description
             entry.status = action.payload.status
+            entry.description = action.payload.description
           }
           return entry
         }),

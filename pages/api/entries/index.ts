@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '../../../database'
 import { Entry, IEntry } from '../../../models'
+import { IEntry } from '../../../models/Entry'
 
 type Data =
   | {
@@ -32,7 +33,7 @@ const getEntries = async (res: NextApiResponse<Data>) => {
 
 const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { description } = req.body
-  const newEntry = new Entry({
+  const newEntry: any = new Entry({
     description,
     createdAt: Date.now(),
   })
@@ -41,7 +42,7 @@ const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.connect()
     await newEntry.save()
     await db.disconnect()
-    return res.status(201).json({ message: description })
+    return res.status(201).json(newEntry)
   } catch (error) {
     await db.disconnect()
     console.log(error)

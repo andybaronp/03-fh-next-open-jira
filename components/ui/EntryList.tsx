@@ -21,6 +21,11 @@ export const EntryList: FC<Props> = ({ status }) => {
   )
 
   //Funtions Drag on Drop
+  const allowDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+  }
+
+  //Funtions Drag on Drop
   const onDropEntry = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     const id = event.dataTransfer.getData('text')
@@ -31,10 +36,6 @@ export const EntryList: FC<Props> = ({ status }) => {
     EndDragging()
   }
 
-  //Funtions Drag on Drop
-  const allowDrop = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-  }
   return (
     <div
       onDrop={onDropEntry}
