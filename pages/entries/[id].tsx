@@ -34,7 +34,7 @@ interface Props {
 }
 const EntryPage: FC<Props> = ({ entry }) => {
   const router = useRouter()
-  const { upEntry } = useContext(EntriesContext)
+  const { upEntry, deletedEntry } = useContext(EntriesContext)
   const [inputValue, setInputValue] = useState(entry.description)
   const [status, setStatus] = useState<EntryStatus>(entry.status)
   const [touched, setTouched] = useState(false)
@@ -59,6 +59,11 @@ const EntryPage: FC<Props> = ({ entry }) => {
       description: inputValue,
     }
     upEntry(updatedEntry, true)
+    router.push('/')
+  }
+
+  const onDeleted = () => {
+    deletedEntry(entry, true)
     router.push('/')
   }
   return (
@@ -121,6 +126,7 @@ const EntryPage: FC<Props> = ({ entry }) => {
           bottom: 30,
           backgroundColor: 'error.dark',
         }}
+        onClick={onDeleted}
       >
         <DeleteForeverOutlinedIcon />
       </IconButton>

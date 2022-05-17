@@ -38,7 +38,7 @@ export const EntriesProvider: FC = ({ children }: any) => {
         description,
         status,
       })
-      dispatch({ type: '[Emtry] UpEntry', payload: data })
+      dispatch({ type: '[Entry] UpEntry', payload: data })
       if (showSnackbar)
         enqueueSnackbar('Entrada actualizada', {
           variant: 'success',
@@ -61,9 +61,28 @@ export const EntriesProvider: FC = ({ children }: any) => {
       console.log(error)
     }
   }
+
+  // Deleted Entry
+  const deletedEntry = async (entry: Entry, showSnackbar = false) => {
+    const { data } = await entriesApi.delete<Entry>(`/entries/${entry._id}`)
+    dispatch({ type: '[Entry] Deleted', payload: data })
+    if (showSnackbar)
+      enqueueSnackbar(
+        `Entrada ${entry.description.substring(0, 20)}... eliminada`,
+        {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right',
+          },
+          autoHideDuration: 1900,
+        }
+      )
+  }
+
   useEffect(() => {
     refreshEntries()
-  }, [])
+  }, [state])
 
   return (
     //ContextProvider
@@ -74,6 +93,7 @@ export const EntriesProvider: FC = ({ children }: any) => {
         // Methods
         addNewEntry,
         upEntry,
+        deletedEntry,
       }}
     >
       {children}
